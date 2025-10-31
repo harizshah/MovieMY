@@ -1,3 +1,4 @@
+<button (click)="addMovie()">Add a movie</button>
 
 @if (!movies){
   <img src="loading.gif" />
@@ -20,6 +21,9 @@
       </div>
       <div>
         Price: {{movie.price | currency}}
+      </div>
+      <div>
+        <button (click)="removeMovie(movie)">Remove Movie</button>
       </div>
     </div>
   }

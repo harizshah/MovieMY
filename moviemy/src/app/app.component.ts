@@ -28,7 +28,7 @@ export class AppComponent {
           poster: 'https://upload.wikimedia.org/wikipedia/en/7/73/Moana_2_poster.jpg'
         }];
 
-        this.inTheatersMovies =[
+        this.upcomingReleasesMovies =[
         {
           title: 'Bad Boys: Ride or Die',
           releaseDate: new Date('2016-05-03'),
@@ -53,6 +53,6 @@ export class AppComponent {
           price: 300.99,
           poster: 'https://upload.wikimedia.org/wikipedia/en/thumb/e/ed/The_Flash_%28film%29_poster.jpg/220px-The_Flash_%28film%29_poster.jpg'
         }];
-    }, 2000)
+    })
   }
 }
