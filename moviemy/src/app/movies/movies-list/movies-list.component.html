@@ -5,23 +5,29 @@
     @for(movie of movies; track $index){
       <div class="movies-container">
         <div>
-          <img [src]="movie.poster" width="169" height="250"/>
+          @if(movie.poster){
+            <img [src]="movie.poster" width="169" height="250" />
+          } @else {
+            <img src="default.jpg" width="169" height="250" />
+          }
         </div>
         <div>
-          {{$index +1}})Movie: <b>{{movie.title | uppercase}}</b>
+          <div>
+            <h2> {{$index + 1}}) Movie: <b>{{movie.title | uppercase}}</b></h2>
+          </div>
+          <div>
+            Release Date: {{movie.releaseDate | date:"MMMM-dd-yyyy" | uppercase}}
+          </div>
+          <div>
+            Price: {{movie.price | currency}}
+          </div>
+          <div>
+            <button (click)="removeMovie(movie)">Remove</button>
+          </div>
         </div>
-        <div>
-          Release Date: {{movie.releaseDate | date:"MMMM-dd-yyyy" | uppercase}}
-        </div>
-        <div>
-          Price: {{movie.price | currency}}
-        </div>
-        <div>
-          <button (click)="removeMovie(movie)">Remove Movie</button>
-        </div>
+
       </div>
     }
-
   </ng-container>
 </app-generic-list>
 
