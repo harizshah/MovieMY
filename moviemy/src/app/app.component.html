@@ -1,9 +1,15 @@
 <app-menu></app-menu>
 
-<h2>Upcoming Releases</h2>
+<button mat-flat-button class="primary">Primary</button>
+<button mat-flat-button class="secondary">Secondary</button>
+<button mat-flat-button class="warn">Warn</button>
 
-<app-movies-list [movies]="upcomingReleasesMovies"></app-movies-list>
+<div class="container">
+  <h2>Upcoming Releases</h2>
 
-<h2>In Theaters</h2>
+  <app-movies-list [movies]="upcomingReleasesMovies"></app-movies-list>
 
-<app-movies-list [movies]="inTheatersMovies"></app-movies-list>
+  <h2>In Theaters</h2>
+
+  <app-movies-list [movies]="inTheatersMovies"></app-movies-list>
+</div>

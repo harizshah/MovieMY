@@ -7,9 +7,6 @@ import {MatIconModule} from '@angular/material/icon';
 @Component({
   selector: 'app-movies-list',
     imports: [
-        CurrencyPipe,
-        DatePipe,
-        UpperCasePipe,
       GenericListComponent,
       MatButtonModule,
       MatIconModule

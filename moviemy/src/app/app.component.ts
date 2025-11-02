@@ -3,10 +3,11 @@ import { RouterOutlet } from '@angular/router';
 import { DatePipe, UpperCasePipe, CurrencyPipe} from '@angular/common';
 import {MoviesListComponent} from './movies/movies-list/movies-list.component';
 import {MenuComponent} from './shared/components/menu/menu.component';
+import {MatButtonModule} from '@angular/material/button';
 
 @Component({
   selector: 'app-root',
-  imports: [MoviesListComponent, MenuComponent],
+  imports: [MoviesListComponent, MenuComponent, MatButtonModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
@@ -14,7 +15,7 @@ export class AppComponent {
 
   upcomingReleasesMovies: any;
   inTheatersMovies: any;
-  constructor() {
+  constructor(){
     setTimeout(() => {
       this.inTheatersMovies = [{
         title: 'Inside Out 2',
@@ -29,7 +30,7 @@ export class AppComponent {
           poster: 'https://upload.wikimedia.org/wikipedia/en/7/73/Moana_2_poster.jpg'
         }];
 
-        this.upcomingReleasesMovies =[
+      this.upcomingReleasesMovies = [
         {
           title: 'Bad Boys: Ride or Die',
           releaseDate: new Date('2016-05-03'),
@@ -54,6 +55,11 @@ export class AppComponent {
           price: 300.99,
           poster: 'https://upload.wikimedia.org/wikipedia/en/thumb/e/ed/The_Flash_%28film%29_poster.jpg/220px-The_Flash_%28film%29_poster.jpg'
         }];
-    })
+    }, 100)
   }
+
+  processRating(rate: number){
+    alert(`You rated the movie ${rate}`);
+  }
+
 }
