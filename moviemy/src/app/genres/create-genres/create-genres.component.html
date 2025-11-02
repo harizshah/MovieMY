@@ -1,1 +1,17 @@
-<button mat-flat-button (click)="saveChanges()">Save Changes</button>
+<h2>Create Genre</h2>
+
+<form (submit)="saveChanges()">
+
+  <mat-form-field appearance="outline">
+    <mat-label>Name</mat-label>
+    <input matInput [formControl]="form.controls.name" />
+    <mat-error>{{getErrorMessagesForName()}}</mat-error>
+  </mat-form-field>
+
+  <div>
+    <button [disabled]="form.invalid" mat-flat-button type="submit">Save Changes</button>
+    <a routerLink="/genres" mat-stroked-button>Cancel</a>
+  </div>
+</form>
+
+
