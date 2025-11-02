@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
+import {MoviesListComponent} from '../movies/movies-list/movies-list.component';
 
 @Component({
   selector: 'app-landing-page',
-  imports: [],
+  imports: [MoviesListComponent],
   templateUrl: './landing-page.component.html',
   styleUrl: './landing-page.component.css'
 })
