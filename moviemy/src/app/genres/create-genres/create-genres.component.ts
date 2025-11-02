@@ -4,30 +4,25 @@ import {MatButtonModule} from '@angular/material/button';
 import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
+import {GenresFormComponent} from '../genres-form/genres-form.component';
+import { firstLetterShouldBeUppercase } from '../../shared/functions/validations';
+import { GenreCreationDTO } from '../genres.models';
 
 @Component({
   selector: 'app-create-genre',
-  imports: [MatButtonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, RouterLink],
+  imports: [MatButtonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, GenresFormComponent],
   templateUrl: './create-genres.component.html',
   styleUrl: './create-genres.component.css'
 })
+
 export class CreateGenreComponent {
 
   router = inject(Router);
-  private formBuilder = inject(FormBuilder);
 
-  form = this.formBuilder.group({
-    name: ['', {validators: [Validators.required]}],
-  });
-
-  getErrorMessagesForName(): string {
-    let field = this.form.controls.name;
-    return "The name field is required";
-  }
-
-  saveChanges(){
-    // ..save changes
-    console.log(this.form.value);
+  saveChanges(genre: GenreCreationDTO){
+    // .. save changes
+    console.log(genre);
     this.router.navigate(['/genres']);
   }
+
 }
