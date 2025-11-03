@@ -7,6 +7,17 @@ body {
   height: fit-content;
 }
 
-h2 {
-  color: red;
+.buttons-container button {
+  margin-right: 1rem;
+}
+
+mat-form-field {
+  width: 100%;
+  max-width: 500px;
+  display: block !important;
+  margin-top: 1rem;
+}
+
+.buttons-container{
+  margin-top: 1rem;
 }
