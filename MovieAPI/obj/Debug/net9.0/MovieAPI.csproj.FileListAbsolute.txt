@@ -33,3 +33,4 @@ C:\Users\User\RiderProjects\MovieMy\MovieAPI\obj\Debug\net9.0\ref\MovieAPI.dll
 C:\Users\User\RiderProjects\MovieMy\MovieAPI\bin\Debug\net9.0\Swashbuckle.AspNetCore.Swagger.dll
 C:\Users\User\RiderProjects\MovieMy\MovieAPI\bin\Debug\net9.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 C:\Users\User\RiderProjects\MovieMy\MovieAPI\bin\Debug\net9.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\User\RiderProjects\MovieMy\MovieAPI\obj\Debug\net9.0\MovieAPI.sourcelink.json
