@@ -12,7 +12,9 @@ namespace MovieAPI.Controllers
     public class GenresController
     {
         // This method handles HTTP GET requests (when someone tries to read data)
-        [HttpGet]
+        [HttpGet("all-genres")] // api/genres/all-genres
+        [HttpGet] // api/genres
+        [HttpGet("/all-of-the-genres")] // /all-of-the-genres
         public List<Genre> Get()
         {
             // Create a new instance of the InMemoryRepository class
@@ -23,6 +25,14 @@ namespace MovieAPI.Controllers
 
             // Return the list of genres to the client
             return genres;
+        }
+
+        [HttpGet("{id:int}")] // api/genres/500
+        public Genre? Get(int id)
+        {
+            var repository = new InMemoryRepository();
+            var genre = repository.GetById(id);
+            return genre;
         }
 
         // This method handles HTTP POST requests (used for creating new data)
