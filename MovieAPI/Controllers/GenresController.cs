@@ -3,13 +3,14 @@ using Microsoft.AspNetCore.Mvc;
 
 // This allows access to the Genre class inside MovieAPI.Entities
 using MovieAPI.Entities;
+using Microsoft.AspNetCore.OutputCaching;
 
 namespace MovieAPI.Controllers
 {
     // This sets the base URL path for this controller.
     // So the endpoint will start with "api/genres"
     [Route("api/genres")]
-    public class GenresController
+    public class GenresController: ControllerBase
     {
         // This method handles HTTP GET requests (when someone tries to read data)
         [HttpGet("all-genres")] // api/genres/all-genres
@@ -28,10 +29,17 @@ namespace MovieAPI.Controllers
         }
 
         [HttpGet("{id:int}")] // api/genres/500
-        public Genre? Get(int id)
+        [OutputCache]
+        public async Task<ActionResult<Genre>> Get(int id)
         {
             var repository = new InMemoryRepository();
-            var genre = repository.GetById(id);
+            var genre =  await repository.GetById(id);
+
+            if (genre is null)
+            {
+                return NotFound();
+            }
+
             return genre;
         }
 

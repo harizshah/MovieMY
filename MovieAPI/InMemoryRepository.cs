@@ -1,18 +1,19 @@
-﻿// This line allows access to the Genre class located in the MovieAPI.Entities namespace
+﻿// This line gives access to the Genre class from the MovieAPI.Entities namespace
 using MovieAPI.Entities;
 
 namespace MovieAPI
 {
-    // This class stores and manages data in memory (no database yet)
+    // This class simulates a data source that keeps information in memory.
+    // It does not connect to a real database yet.
     public class InMemoryRepository
     {
-        // This is a private list that holds Genre objects
+        // A private list that holds Genre objects in memory
         private List<Genre> _genres;
 
-        // This is the constructor — it runs automatically when the class is created
+        // Constructor: runs automatically when a new InMemoryRepository object is created
         public InMemoryRepository()
         {
-            // Here we create a new list of Genre and add two sample items to it
+            // Create a list of genres and add two sample records
             _genres = new List<Genre>
             {
                 new Genre { Id = 1, Name = "Comedy" },
@@ -20,15 +21,25 @@ namespace MovieAPI
             };
         }
 
-        // This method returns all the genres in the list
+        // This method returns all the genres from the list
         public List<Genre> GetAllGenres()
         {
             return _genres;
         }
-        
-        public Genre? GetById(int id)
+
+        // This asynchronous method finds a genre by its Id
+        public async Task<Genre?> GetById(int id)
         {
+            // Simulate a delay of 3 seconds to mimic a slow operation (like a database call)
+            await Task.Delay(TimeSpan.FromSeconds(3));
+
+            // Find and return the first genre with the matching Id, or null if not found
             return _genres.FirstOrDefault(g => g.Id == id);
+        }
+        
+        private async Task MyPrivateMethod()
+        {
+            await Task.Delay(TimeSpan.FromSeconds(3));
         }
     }
 }
