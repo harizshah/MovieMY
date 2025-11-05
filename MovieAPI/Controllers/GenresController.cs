@@ -42,10 +42,17 @@ namespace MovieAPI.Controllers
 
             return genre;
         }
+        
+        [HttpGet("{name}")] // api/genres/comedy?id=7
+        [OutputCache]
+        public async Task<ActionResult<Genre>> Get(string name,int id)
+        {
+            return new Genre {Id = id, Name = name };
+        }
 
         // This method handles HTTP POST requests (used for creating new data)
         [HttpPost]
-        public void Post()
+        public async Task<ActionResult<Genre>> Post([FromBody] Genre genre)
         {
             // Empty for now — later will add logic to add a new genre
         }
