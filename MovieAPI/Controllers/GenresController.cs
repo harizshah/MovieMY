@@ -1,41 +1,79 @@
-﻿// This allows access to ASP.NET Core MVC features like [HttpGet], [HttpPost], etc.
-using Microsoft.AspNetCore.Mvc;
-
-// This allows access to the Genre class inside MovieAPI.Entities
-using MovieAPI.Entities;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OutputCaching;
+using MovieAPI.Entities;
 
 namespace MovieAPI.Controllers
 {
-    // This sets the base URL path for this controller.
-    // So the endpoint will start with "api/genres"
     [Route("api/genres")]
+    [ApiController]
     public class GenresController: ControllerBase
     {
         private readonly IRepository repository;
+        private readonly TransientService transient1;
+        private readonly TransientService transient2;
+        private readonly ScopedService scoped1;
+        private readonly ScopedService scoped2;
+        private readonly SingletonService singleton;
+        private readonly IOutputCacheStore outputCacheStore;
+        private readonly IConfiguration configuration;
+        private const string cacheTag = "genres";
 
-        public GenresController(IRepository repository)
+        public GenresController(IRepository repository, TransientService transient1,
+            TransientService transient2, ScopedService scoped1, ScopedService scoped2,
+            SingletonService singleton, IOutputCacheStore outputCacheStore, IConfiguration configuration)
         {
             this.repository = repository;
+            this.transient1 = transient1;
+            this.transient2 = transient2;
+            this.scoped1 = scoped1;
+            this.scoped2 = scoped2;
+            this.singleton = singleton;
+            this.outputCacheStore = outputCacheStore;
+            this.configuration = configuration;
         }
-        
-        
-        // This method handles HTTP GET requests (when someone tries to read data)
+
+        [HttpGet("get-connection-string")]
+        public IActionResult GetConnectionString()
+        {
+            var connectionString = configuration.GetValue<string>("myConnectionString");
+            return Ok(connectionString);
+        }
+
+        [HttpGet("lifecycle-services")]
+        public IActionResult GetLifecycleServices()
+        {
+            return Ok(new
+            {
+                Transients = new
+                {
+                    transient1 = transient1.GetId(),
+                    transient2 = transient2.GetId()
+                },
+               Scopeds = new
+               {
+                   scoped1 = scoped1.GetId(),
+                   scoped2 = scoped2.GetId()
+               },
+               Singleton = new
+               {
+                   singleton = singleton.GetId()
+               }
+            });
+        }
+
         [HttpGet("all-genres")] // api/genres/all-genres
         [HttpGet] // api/genres
         [HttpGet("/all-of-the-genres")] // /all-of-the-genres
+        [OutputCache(Tags = [cacheTag])]
         public List<Genre> Get()
         {
-
-            // Call the GetAllGenres() method to get all genre data
             var genres = repository.GetAllGenres();
             
-            // Return the list of genres to the client
             return genres;
         }
 
         [HttpGet("{id:int}")] // api/genres/500
-        [OutputCache]
+        [OutputCache(Tags = [cacheTag])]
         public async Task<ActionResult<Genre>> Get(int id)
         {
             var genre =  await repository.GetById(id);
@@ -47,41 +85,39 @@ namespace MovieAPI.Controllers
 
             return genre;
         }
-        
+
         [HttpGet("{name}")] // api/genres/comedy?id=7
-        [OutputCache]
-        public async Task<ActionResult<Genre>> Get(string name,int id)
+        [OutputCache(Tags = [cacheTag])]
+        public async Task<ActionResult<Genre>> Get(string name, [FromQuery] int id)
         {
             return new Genre {Id = id, Name = name };
         }
 
-        // This method handles HTTP POST requests (used for creating new data)
         [HttpPost]
         public async Task<ActionResult<Genre>> Post([FromBody] Genre genre)
         {
             var genreWithSameNameExists = repository.Exists(genre.Name);
-            
+
             if (genreWithSameNameExists)
             {
                 return BadRequest($"There's already a genre with the name {genre.Name}");
             }
 
-            genre.Id = 3;
+            repository.Create(genre);
+            await outputCacheStore.EvictByTagAsync(cacheTag, default);
             return genre;
         }
 
-        // This method handles HTTP PUT requests (used for updating data)
         [HttpPut]
         public void Put()
         {
-            // Empty for now — later will add logic to update a genre
+
         }
 
-        // This method handles HTTP DELETE requests (used for deleting data)
         [HttpDelete]
         public void Delete()
         {
-            // Empty for now — later will add logic to delete a genre
+
         }
     }
 }
