@@ -2,16 +2,16 @@
 
 namespace MovieAPI
 {
-    public class InMemoryRepository: IRepository
+    public class SQLServerRepository : IRepository
     {
         private List<Genre> _genres;
 
-        public InMemoryRepository()
+        public SQLServerRepository()
         {
             _genres = new List<Genre>
             {
-                new Genre{Id=1, Name = "Comedy"},
-                new Genre{Id=2, Name = "Action"}
+                new Genre{Id=1, Name = "Comedy SQL"},
+                new Genre{Id=2, Name = "Action SQL"}
             };
         }
 
@@ -31,17 +31,14 @@ namespace MovieAPI
             return _genres.Any(g => g.Name == name);
         }
 
-        public int Create(Genre genre)
+        public void MyMethod()
         {
-            var id = _genres.Max(g => g.Id) + 1;
-            genre.Id = id;
-            _genres.Add(genre);
-            return id;
+
         }
 
-        //private async Task MyPrivateMethod()
-        //{
-        //    await Task.Delay(TimeSpan.FromSeconds(3));
-        //}
+        public int Create(Genre genre)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

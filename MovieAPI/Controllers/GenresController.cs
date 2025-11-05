@@ -12,18 +12,24 @@ namespace MovieAPI.Controllers
     [Route("api/genres")]
     public class GenresController: ControllerBase
     {
+        private readonly IRepository repository;
+
+        public GenresController(IRepository repository)
+        {
+            this.repository = repository;
+        }
+        
+        
         // This method handles HTTP GET requests (when someone tries to read data)
         [HttpGet("all-genres")] // api/genres/all-genres
         [HttpGet] // api/genres
         [HttpGet("/all-of-the-genres")] // /all-of-the-genres
         public List<Genre> Get()
         {
-            // Create a new instance of the InMemoryRepository class
-            var repository = new InMemoryRepository();
 
             // Call the GetAllGenres() method to get all genre data
             var genres = repository.GetAllGenres();
-
+            
             // Return the list of genres to the client
             return genres;
         }
@@ -32,7 +38,6 @@ namespace MovieAPI.Controllers
         [OutputCache]
         public async Task<ActionResult<Genre>> Get(int id)
         {
-            var repository = new InMemoryRepository();
             var genre =  await repository.GetById(id);
 
             if (genre is null)
@@ -54,7 +59,15 @@ namespace MovieAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Genre>> Post([FromBody] Genre genre)
         {
-            // Empty for now — later will add logic to add a new genre
+            var genreWithSameNameExists = repository.Exists(genre.Name);
+            
+            if (genreWithSameNameExists)
+            {
+                return BadRequest($"There's already a genre with the name {genre.Name}");
+            }
+
+            genre.Id = 3;
+            return genre;
         }
 
         // This method handles HTTP PUT requests (used for updating data)
