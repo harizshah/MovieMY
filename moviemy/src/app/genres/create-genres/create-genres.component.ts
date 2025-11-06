@@ -8,10 +8,12 @@ import {GenresFormComponent} from '../genres-form/genres-form.component';
 import { firstLetterShouldBeUppercase } from '../../shared/functions/validations';
 import { GenreCreationDTO } from '../genres.models';
 import {GenresService} from '../genres.service';
+import {extractErrors} from '../../shared/functions/extractErrors';
+import {DisplayErrorsComponent} from '../../shared/components/display-errors/display-errors.component';
 
 @Component({
   selector: 'app-create-genre',
-  imports: [MatButtonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, GenresFormComponent],
+  imports: [MatButtonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, GenresFormComponent, DisplayErrorsComponent],
   templateUrl: './create-genres.component.html',
   styleUrl: './create-genres.component.css'
 })
@@ -19,12 +21,18 @@ import {GenresService} from '../genres.service';
 export class CreateGenreComponent {
 
   router = inject(Router);
-  genresService = inject(GenresService)
+  genresService = inject(GenresService);
+  errors: string[] = [];
 
-  saveChanges(genre: GenreCreationDTO){
-    this.genresService.create(genre).subscribe(() => {
-      this.router.navigate(['/genres']);
-    })
+  saveChanges(genre: GenreCreationDTO) {
+    this.genresService.create(genre).subscribe({
+      next: () => {
+        this.router.navigate(['/genres']);
+      },
+      error: (err) => {
+        const errors = extractErrors(err);
+        this.errors = errors;
+      }
+    });
   }
-
 }
