@@ -1,21 +1,14 @@
-﻿// 👇 Namespace groups related classes under one logical name (like a folder in code)
+﻿using MovieAPI.Validations;
 using System.ComponentModel.DataAnnotations;
-using MovieAPI.Validations;
 
 namespace MovieAPI.Entities
 {
-    // 👇 'public' means this class can be accessed from anywhere in the project
     public class Genre
     {
-        // 👇 Property #1: 'Id' is an integer (int)
-        // It uniquely identifies each Genre record (e.g. 1 = Action, 2 = Comedy)
         public int Id { get; set; }
         [Required(ErrorMessage = "You must fill the {0} field")]
         [StringLength(maximumLength: 50)]
         [FirstLetterUppercase]
-        // 👇 Property #2: 'Name' is a string (text)
-        // 'required' means it MUST have a value (C# 11+ feature)
-        // get; set; means you can read and modify this property
         public required string Name { get; set; }
     }
 }

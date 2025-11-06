@@ -1,5 +1,6 @@
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
+import { provideHttpClient, withFetch } from '@angular/common/http';
 
 import { routes } from './app.routes';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
@@ -20,6 +21,7 @@ export const appConfig: ApplicationConfig = {
         dateA11yLabel: 'LL',
         monthYearA11yLabel: 'MMMM YYYY',
       },
-    })
+    }),
+    provideHttpClient(withFetch()),
   ]
 };

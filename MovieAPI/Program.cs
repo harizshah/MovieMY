@@ -14,13 +14,20 @@ builder.Services.AddOutputCache(options =>
 });
 
 builder.Services.AddSingleton<IRepository, InMemoryRepository>();
-builder.Services.AddScoped<ScopedService>();
-builder.Services.AddSingleton<SingletonService>();
 
-// Register lifecycle demo services
 builder.Services.AddTransient<TransientService>();
 builder.Services.AddScoped<ScopedService>();
 builder.Services.AddSingleton<SingletonService>();
+
+var allowedOrigins = builder.Configuration.GetValue<string>("AllowedOrigins")!.Split(",");
+
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.WithOrigins(allowedOrigins).AllowAnyMethod().AllowAnyHeader();
+    });
+});
 
 var app = builder.Build();
 
@@ -28,12 +35,15 @@ var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI();
 
-app.UseOutputCache();
-
 app.UseHttpsRedirection();
+
+app.UseCors();
+
+app.UseOutputCache();
 
 app.UseAuthorization();
 
 app.MapControllers();
 
 app.Run();
+
