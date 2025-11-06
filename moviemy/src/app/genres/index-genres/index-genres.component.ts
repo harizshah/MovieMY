@@ -4,6 +4,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import {GenresService} from '../genres.service';
 import {GenreDTO} from '../genres.models';
+import {environment} from '../../../environments/environment';
 
 @Component({
   selector: 'app-index-genres',

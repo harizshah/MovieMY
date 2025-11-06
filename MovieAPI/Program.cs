@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using MovieAPI;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -28,6 +29,8 @@ builder.Services.AddCors(options =>
         policy.WithOrigins(allowedOrigins).AllowAnyMethod().AllowAnyHeader();
     });
 });
+
+builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer("name=DefaultConnection"));
 
 var app = builder.Build();
 
