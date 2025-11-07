@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.OutputCaching;
 using Microsoft.EntityFrameworkCore;
 using MovieAPI.DTOs;
 using MovieAPI.Entities;
+using MovieAPI.Utilities;
 
 namespace MovieAPI.Controllers
 {
@@ -27,9 +28,15 @@ namespace MovieAPI.Controllers
 
         [HttpGet] // api/genres
         [OutputCache(Tags = [cacheTag])]
-        public async Task<List<GenreDTO>> Get()
+        public async Task<List<GenreDTO>> Get([FromQuery] PaginationDTO pagination)
         {
-            return await context.Genres.ProjectTo<GenreDTO>(mapper.ConfigurationProvider).ToListAsync();
+            var queryable = context.Genres;
+            await HttpContext.InsertPaginationParametersInHeader(queryable);
+            return await queryable
+                .OrderBy(g => g.Name)
+                .Paginate(pagination)
+                .ProjectTo<GenreDTO>(mapper.ConfigurationProvider)
+                .ToListAsync();
         }
 
         [HttpGet("{id:int}", Name = "GetGenreById")] // api/genres/500
