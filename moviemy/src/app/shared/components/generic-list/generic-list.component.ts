@@ -7,6 +7,6 @@ import { Component, Input } from '@angular/core';
   styleUrl: './generic-list.component.css'
 })
 export class GenericListComponent {
-  @Input({required:true})
+  @Input({required: true})
   elements: any;
 }
