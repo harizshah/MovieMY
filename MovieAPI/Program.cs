@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using MovieAPI;
+using AutoMapper;
+using MovieAPI.Utilities;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,6 +33,8 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer("name=DefaultConnection"));
+
+builder.Services.AddAutoMapper(typeof(Program));
 
 var app = builder.Build();
 
