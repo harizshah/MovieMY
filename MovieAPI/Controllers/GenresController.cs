@@ -41,9 +41,18 @@ namespace MovieAPI.Controllers
 
         [HttpGet("{id:int}", Name = "GetGenreById")] // api/genres/500
         [OutputCache(Tags = [cacheTag])]
-        public async Task<ActionResult<Genre>> Get(int id)
+        public async Task<ActionResult<GenreDTO>> Get(int id)
         {
-            throw new NotImplementedException();
+            var genre = await context.Genres
+                .ProjectTo<GenreDTO>(mapper.ConfigurationProvider)
+                .FirstOrDefaultAsync(g => g.Id == id);
+
+            if (genre == null)
+            {
+                return NotFound();
+            }
+
+            return genre;
         }
 
         [HttpPost]
@@ -55,6 +64,26 @@ namespace MovieAPI.Controllers
             await outputCacheStore.EvictByTagAsync(cacheTag, default);
             var genreDTO = mapper.Map<GenreDTO>(genre);
             return CreatedAtRoute("GetGenreById", new { id = genre.Id }, genreDTO);
+        }
+
+        [HttpPut("{id:int}")]
+        public async Task<IActionResult> Put(int id, [FromBody] GenreCreationDTO genreCreationDto)
+        {
+            var genreExists = await context.Genres.AnyAsync(g => g.Id == id);
+
+            if (!genreExists)
+            {
+                return NotFound();
+            }
+            
+            var genre = mapper.Map<Genre>(genreCreationDto);
+            genre.Id = id;
+            
+            context.Update(genre);
+            await context.SaveChangesAsync();
+            await outputCacheStore.EvictByTagAsync(cacheTag, default);
+
+            return NoContent();
         }
         
         
