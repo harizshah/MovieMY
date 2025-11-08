@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.ComponentModel;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.TagHelpers;
 using Microsoft.AspNetCore.OutputCaching;
@@ -15,6 +16,7 @@ namespace MovieAPI.Controllers
         private readonly ApplicationDbContext context;
         private readonly IMapper mapper;
         private readonly IOutputCacheStore outputCacheStore;
+        private readonly IFileStorage fileStorage;
         private const string cacheTag = "Actors";
         private readonly string container = "Actors";
 
@@ -24,6 +26,7 @@ namespace MovieAPI.Controllers
             this.context = context;
             this.mapper = mapper;
             this.outputCacheStore = outputCacheStore;
+            this.fileStorage = fileStorage;
         }
 
         [HttpPost]
@@ -33,7 +36,7 @@ namespace MovieAPI.Controllers
 
             if (actorCreationDto.Picture is not null)
             {
-                var url = await.IFileStorage.Store(container, actorCreationDto.Picture);
+                var url = await fileStorage.Store(container, actorCreationDto.Picture);
                 actor.Picture = url;
             }
             

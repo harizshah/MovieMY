@@ -166,3 +166,4 @@ C:\Users\User\RiderProjects\MovieMy\MovieAPI\obj\Debug\net9.0\refint\MovieAPI.dl
 C:\Users\User\RiderProjects\MovieMy\MovieAPI\obj\Debug\net9.0\MovieAPI.pdb
 C:\Users\User\RiderProjects\MovieMy\MovieAPI\obj\Debug\net9.0\MovieAPI.genruntimeconfig.cache
 C:\Users\User\RiderProjects\MovieMy\MovieAPI\obj\Debug\net9.0\ref\MovieAPI.dll
+C:\Users\User\RiderProjects\MovieMy\MovieAPI\bin\Debug\net9.0\MovieAPI.staticwebassets.runtime.json

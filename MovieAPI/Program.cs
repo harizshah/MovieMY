@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using MovieAPI;
 using AutoMapper;
+using MovieAPI.Services;
 using MovieAPI.Utilities;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -32,9 +33,13 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer("name=DefaultConnection"));
 
 builder.Services.AddAutoMapper(typeof(Program));
+
+builder.Services.AddTransient<IFileStorage, LocalFileStorage>();
 
 var app = builder.Build();
 
@@ -43,6 +48,8 @@ app.UseSwagger();
 app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
+
+app.UseStaticFiles();
 
 app.UseCors();
 
