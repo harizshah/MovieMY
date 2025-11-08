@@ -23,4 +23,6 @@ import {IndexEntitiesComponent} from '../../shared/components/index-entities/ind
   providers: [ {provide: CRUD_SERVICE_TOKEN, useClass: ActorsService}
   ]
 })
-export class IndexActorsComponent {}
+export class IndexActorsComponent {
+
+}
