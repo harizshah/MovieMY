@@ -167,3 +167,7 @@ C:\Users\User\RiderProjects\MovieMy\MovieAPI\obj\Debug\net9.0\MovieAPI.pdb
 C:\Users\User\RiderProjects\MovieMy\MovieAPI\obj\Debug\net9.0\MovieAPI.genruntimeconfig.cache
 C:\Users\User\RiderProjects\MovieMy\MovieAPI\obj\Debug\net9.0\ref\MovieAPI.dll
 C:\Users\User\RiderProjects\MovieMy\MovieAPI\bin\Debug\net9.0\MovieAPI.staticwebassets.runtime.json
+C:\Users\User\RiderProjects\MovieMy\MovieAPI\bin\Debug\net9.0\Microsoft.EntityFrameworkCore.SqlServer.NetTopologySuite.dll
+C:\Users\User\RiderProjects\MovieMy\MovieAPI\bin\Debug\net9.0\NetTopologySuite.dll
+C:\Users\User\RiderProjects\MovieMy\MovieAPI\bin\Debug\net9.0\NetTopologySuite.IO.SqlServerBytes.dll
+C:\Users\User\RiderProjects\MovieMy\MovieAPI\obj\Debug\net9.0\EFCoreSqlServerNetTopologySuite.cs
