@@ -9,6 +9,13 @@ namespace MovieAPI.Utilities
         public AutoMapperProfiles()
         {
             ConfigureGenres();
+            ConfigureActors();
+        }
+
+        private void ConfigureActors()
+        {
+            CreateMap<ActorCreationDTO, Actor>()
+                .ForMember(x => x.Picture, options => options.Ignore());
         }
 
         private void ConfigureGenres()
