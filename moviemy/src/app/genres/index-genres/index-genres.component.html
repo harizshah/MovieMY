@@ -30,7 +30,7 @@
                       confirmButtonText: 'Yes, delete it',
                       cancelButtonText: 'Cancel'
                     }"
-                  (confirm)="delete(element.id)">Delete</button>
+                   (confirm)="delete(element.id)">Delete</button>
         </td>
       </ng-container>
 
@@ -38,10 +38,9 @@
       <tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr>
     </table>
     <mat-paginator showFirstLastButtons [length]="totalRecordsCount"
-    pageSize="pagination.recordsPerPage" [pageIndex]="pagination.page"
-    [pageSizeOptions]="[5,10,25]" class="mat-elevation-z8"
-    (page)="updatePagination($event)">
+                   pageSize="pagination.recordsPerPage" [pageIndex]="pagination.page"
+                   [pageSizeOptions]="[5,10,25]" class="mat-elevation-z8"
+                   (page)="updatePagination($event)">
     </mat-paginator>
   </ng-container>
 </app-generic-list>
-

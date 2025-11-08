@@ -15,7 +15,7 @@ import {SweetAlert2Module} from '@sweetalert2/ngx-sweetalert2';
 @Component({
   selector: 'app-index-genres',
   imports: [RouterLink, MatIconModule, MatButtonModule, MatTableModule, GenericListComponent, MatPaginatorModule,
-  SweetAlert2Module],
+    SweetAlert2Module],
   templateUrl: './index-genres.component.html',
   styleUrl: './index-genres.component.css'
 })
