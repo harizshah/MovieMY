@@ -32,4 +32,8 @@ export class GenresService {
   public update(id: number, genre: GenreCreationDTO){
     return this.http.put(`${this.baseUrl}/${id}`, genre);
   }
+
+  public delete(id: number){
+    return this.http.delete(`${this.baseUrl}/${id}`);
+  }
 }
