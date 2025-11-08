@@ -1,9 +1,6 @@
-﻿using System.ComponentModel;
-using System.Net;
-using AutoMapper;
+﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.TagHelpers;
 using Microsoft.AspNetCore.OutputCaching;
 using Microsoft.EntityFrameworkCore;
 using MovieAPI.DTOs;
@@ -14,18 +11,19 @@ using MovieAPI.Utilities;
 namespace MovieAPI.Controllers
 {
     [Route("api/actors")]
-    [ApiController] 
-    public class ActorsController : ControllerBase
+    [ApiController]
+    public class ActorsController: CustomBaseController
     {
         private readonly ApplicationDbContext context;
         private readonly IMapper mapper;
         private readonly IOutputCacheStore outputCacheStore;
         private readonly IFileStorage fileStorage;
-        private const string cacheTag = "Actors";
-        private readonly string container = "Actors";
+        private const string cacheTag = "actors";
+        private readonly string container = "actors";
 
         public ActorsController(ApplicationDbContext context, IMapper mapper,
             IOutputCacheStore outputCacheStore, IFileStorage fileStorage)
+            :base(context, mapper, outputCacheStore, cacheTag)
         {
             this.context = context;
             this.mapper = mapper;
@@ -37,51 +35,44 @@ namespace MovieAPI.Controllers
         [OutputCache(Tags = [cacheTag])]
         public async Task<List<ActorDTO>> Get([FromQuery] PaginationDTO pagination)
         {
-            var queryable = context.Actors;
-            await HttpContext.InsertPaginationParametersInHeader(queryable);
-            return await queryable
-                .OrderBy(a => a.Name)
-                .Paginate(pagination)
-                .ProjectTo<ActorDTO>(mapper.ConfigurationProvider)
-                .ToListAsync();
+            return await Get<Actor, ActorDTO>(pagination, orderBy: a => a.Name);
         }
-        
+
         [HttpGet("{id:int}", Name = "GetActorById")]
         [OutputCache(Tags = [cacheTag])]
         public async Task<ActionResult<ActorDTO>> Get(int id)
         {
-            var actor = await context.Actors
-                .ProjectTo<ActorDTO>(mapper.ConfigurationProvider)
-                .FirstOrDefaultAsync(a => a.Id == id);
-
-            if (actor == null)
-            {
-                return NotFound();
-            }
-            
-            return actor;
+            return await Get<Actor, ActorDTO>(id);
         }
-            
-        [HttpPost]
-        public async Task<IActionResult> Post([FromForm] ActorCreationDTO actorCreationDto)
-        {
-            var actor = mapper.Map<Actor>(actorCreationDto);
 
-            if (actorCreationDto.Picture is not null)
+        [HttpGet("{name}")]
+        public async Task<ActionResult<List<MovieActorDTO>>> Get(string name)
+        {
+            return await context.Actors.Where(a => a.Name.Contains(name))
+                .ProjectTo<MovieActorDTO>(mapper.ConfigurationProvider)
+                .ToListAsync();
+        }
+
+        [HttpPost]
+        public async Task<CreatedAtRouteResult> Post([FromForm] ActorCreationDTO actorCreationDTO)
+        {
+            var actor = mapper.Map<Actor>(actorCreationDTO);
+
+            if (actorCreationDTO.Picture is not null)
             {
-                var url = await fileStorage.Store(container, actorCreationDto.Picture);
+                var url = await fileStorage.Store(container, actorCreationDTO.Picture);
                 actor.Picture = url;
             }
-            
+
             context.Add(actor);
             await context.SaveChangesAsync();
             await outputCacheStore.EvictByTagAsync(cacheTag, default);
             var actorDTO = mapper.Map<ActorDTO>(actor);
-            return CreatedAtRoute("GetActorById", new { id = actor.Id }, actor);
+            return CreatedAtRoute("GetActorById", new { id = actor.Id }, actorDTO);
         }
 
         [HttpPut("{id:int}")]
-        public async Task<IActionResult> Put(int id, [FromForm] ActorCreationDTO actorCreationDto)
+        public async Task<IActionResult> Put(int id, [FromForm] ActorCreationDTO actorCreationDTO)
         {
             var actor = await context.Actors.FirstOrDefaultAsync(a => a.Id == id);
 
@@ -89,12 +80,12 @@ namespace MovieAPI.Controllers
             {
                 return NotFound();
             }
-            
-            actor = mapper.Map(actorCreationDto, actor);
 
-            if (actorCreationDto.Picture is not null)
+            actor = mapper.Map(actorCreationDTO, actor);
+
+            if (actorCreationDTO.Picture is not null)
             {
-                actor.Picture = await fileStorage.Edit(actor.Picture, container, actorCreationDto.Picture);
+                actor.Picture = await fileStorage.Edit(actor.Picture, container, actorCreationDTO.Picture);
             }
 
             await context.SaveChangesAsync();
@@ -115,7 +106,7 @@ namespace MovieAPI.Controllers
             context.Remove(actor);
             await context.SaveChangesAsync();
             await outputCacheStore.EvictByTagAsync(cacheTag, default);
-            await fileStorage.Delete(actor.Picture,container);
+            await fileStorage.Delete(actor.Picture, container);
             return NoContent();
         }
     }
