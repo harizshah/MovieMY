@@ -1,1 +1,1 @@
-{"ContentRoots":["C:\\Users\\User\\RiderProjects\\MovieMy\\MovieAPI\\wwwroot\\"],"Root":{"Children":null,"Asset":null,"Patterns":[{"ContentRootIndex":0,"Pattern":"**","Depth":0}]}}
+{"ContentRoots":["C:\\Users\\User\\RiderProjects\\MovieMy\\MovieAPI\\wwwroot\\"],"Root":{"Children":{"Actors":{"Children":{"8b98f566-acdf-4533-ac6d-9f02301e18f8.jpg":{"Children":null,"Asset":{"ContentRootIndex":0,"SubPath":"Actors/8b98f566-acdf-4533-ac6d-9f02301e18f8.jpg"},"Patterns":null}},"Asset":null,"Patterns":null}},"Asset":null,"Patterns":[{"ContentRootIndex":0,"Pattern":"**","Depth":0}]}}
