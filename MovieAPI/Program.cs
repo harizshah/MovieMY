@@ -3,6 +3,7 @@ using MovieAPI;
 using AutoMapper;
 using MovieAPI.Services;
 using MovieAPI.Utilities;
+using MoviesAPI.Utilities;
 using NetTopologySuite;
 using NetTopologySuite.Geometries;
 

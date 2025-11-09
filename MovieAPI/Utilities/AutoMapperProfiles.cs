@@ -1,9 +1,9 @@
-﻿using MovieAPI.DTOs;
-using AutoMapper;
+﻿using AutoMapper;
+using MovieAPI.DTOs;
 using MovieAPI.Entities;
 using NetTopologySuite.Geometries;
 
-namespace MovieAPI.Utilities
+namespace MoviesAPI.Utilities
 {
     public class AutoMapperProfiles: Profile
     {
@@ -11,8 +11,47 @@ namespace MovieAPI.Utilities
         {
             ConfigureGenres();
             ConfigureActors();
+            ConfigureTheaters(geometryFactory);
+            ConfigureMovies();
         }
-        
+
+        private void ConfigureMovies()
+        {
+            CreateMap<MovieCreationDTO, Movie>()
+                .ForMember(ent => ent.Poster, options => options.Ignore())
+                .ForMember(ent => ent.MoviesGenres, dto =>
+                dto.MapFrom(p => p.GenresIds!.Select(id => new MovieGenre { GenreId = id })))
+                .ForMember(ent => ent.MoviesTheaters, dto =>
+                dto.MapFrom(p => p.TheatersIds!.Select(id => new MovieTheater { TheaterId = id })))
+                .ForMember(ent => ent.MoviesActors, dto =>
+                dto.MapFrom(p => p.Actors!.Select(actor => 
+                new MovieActor { ActorId = actor.Id, Character = actor.Character })));
+
+            CreateMap<Movie, MovieDTO>();
+
+            CreateMap<Movie, MovieDetailsDTO>()
+                .ForMember(dto => dto.Genres, ent => ent.MapFrom(p => p.MoviesGenres))
+                .ForMember(dto => dto.Theaters, ent => ent.MapFrom(p => p.MoviesTheaters))
+                .ForMember(dto => dto.Actors, ent => ent.MapFrom(p => p.MoviesActors.OrderBy(ma => ma.Order)));
+
+            CreateMap<MovieGenre, GenreDTO>()
+                .ForMember(dto => dto.Id, ent => ent.MapFrom(p => p.GenreId))
+                .ForMember(dto => dto.Name, ent => ent.MapFrom(p => p.Genre.Name));
+
+            CreateMap<MovieTheater, TheaterDTO>()
+                .ForMember(dto => dto.Id, ent => ent.MapFrom(p => p.TheaterId))
+                .ForMember(dto => dto.Name, ent => ent.MapFrom(p => p.Theater.Name))
+                .ForMember(dto => dto.Latitude, ent => ent.MapFrom(p => p.Theater.Location.Y))
+                .ForMember(dto => dto.Longitude, ent => ent.MapFrom(p => p.Theater.Location.X));
+
+            CreateMap<MovieActor, MovieActorDTO>()
+                .ForMember(dto => dto.Id, ent => ent.MapFrom(p => p.ActorId))
+                .ForMember(dto => dto.Name, ent => ent.MapFrom(p => p.Actor.Name))
+                .ForMember(dto => dto.Picture, ent => ent.MapFrom(p => p.Actor.Picture));
+
+
+        }
+
         private void ConfigureTheaters(GeometryFactory geometryFactory)
         {
             CreateMap<Theater, TheaterDTO>()
@@ -22,7 +61,7 @@ namespace MovieAPI.Utilities
             CreateMap<TheaterCreationDTO, Theater>()
                 .ForMember(entity => entity.Location, dto => dto.MapFrom(p =>
                     geometryFactory.CreatePoint(new Coordinate(p.Longitude, p.Latitude
-                    ))));
+                ))));
         }
 
         private void ConfigureActors()
@@ -31,6 +70,8 @@ namespace MovieAPI.Utilities
                 .ForMember(x => x.Picture, options => options.Ignore());
 
             CreateMap<Actor, ActorDTO>();
+
+            CreateMap<Actor, MovieActorDTO>();
         }
 
         private void ConfigureGenres()

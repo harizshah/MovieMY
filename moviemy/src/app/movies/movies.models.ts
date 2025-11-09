@@ -1,4 +1,6 @@
 ﻿import { ActorAutoCompleteDTO } from "../actors/actors.model";
+import { GenreDTO } from "../genres/genres.models";
+import { TheaterDTO } from "../theaters/theaters.models";
 
 export interface MovieDTO {
   id: number;
@@ -6,8 +8,9 @@ export interface MovieDTO {
   releaseDate: Date;
   trailer: string;
   poster?: string;
-  genresIds?: number[];
-
+  genres?: GenreDTO[];
+  theaters?: TheaterDTO[];
+  actors?: ActorAutoCompleteDTO[];
 }
 
 export interface MovieCreationDTO {
@@ -18,4 +21,23 @@ export interface MovieCreationDTO {
   genresIds?: number[];
   theatersIds?: number[];
   actors?: ActorAutoCompleteDTO[];
+}
+
+export interface MoviesPostGetDTO {
+  genres: GenreDTO[];
+  theaters: TheaterDTO[];
+}
+
+export interface MoviesPutGetDTO {
+  movie: MovieDTO;
+  selectedGenres: GenreDTO[];
+  nonSelectedGenres: GenreDTO[];
+  selectedTheaters: TheaterDTO[];
+  nonSelectedTheaters: TheaterDTO[];
+  actors: ActorAutoCompleteDTO[];
+}
+
+export interface LandingDTO {
+  upcomingReleases: MovieDTO[];
+  inTheaters: MovieDTO[];
 }
