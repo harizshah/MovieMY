@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using MovieAPI.Services;
 using MovieAPI.Utilities;
-using MoviesAPI.Utilities;
+using MovieAPI.Utilities;
 using NetTopologySuite;
 using NetTopologySuite.Geometries;
 using System.Text;
