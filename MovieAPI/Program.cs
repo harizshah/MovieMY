@@ -55,6 +55,7 @@ builder.Services.AddSingleton(provider => new MapperConfiguration(config =>
 builder.Services.AddAutoMapper(typeof(Program));
 
 builder.Services.AddTransient<IFileStorage, LocalFileStorage>();
+builder.Services.AddTransient<IUsersService, UsersService>();
 
 builder.Services.AddIdentityCore<IdentityUser>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
