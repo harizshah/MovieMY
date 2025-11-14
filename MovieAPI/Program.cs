@@ -1,11 +1,14 @@
 using Microsoft.EntityFrameworkCore;
 using MovieAPI;
 using AutoMapper;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
 using MovieAPI.Services;
 using MovieAPI.Utilities;
 using MoviesAPI.Utilities;
 using NetTopologySuite;
 using NetTopologySuite.Geometries;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -52,6 +55,28 @@ builder.Services.AddSingleton(provider => new MapperConfiguration(config =>
 builder.Services.AddAutoMapper(typeof(Program));
 
 builder.Services.AddTransient<IFileStorage, LocalFileStorage>();
+
+builder.Services.AddIdentityCore<IdentityUser>()
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultTokenProviders();
+
+builder.Services.AddScoped<UserManager<IdentityUser>>();
+builder.Services.AddScoped<SignInManager<IdentityUser>>();
+
+builder.Services.AddAuthentication().AddJwtBearer(options =>
+{
+    options.MapInboundClaims = false;
+
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = false,
+        ValidateAudience = false,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["jwtkey"]!)),
+        ClockSkew = TimeSpan.Zero
+    };
+});
 
 var app = builder.Build();
 

@@ -171,3 +171,5 @@ C:\Users\User\RiderProjects\MovieMy\MovieAPI\bin\Debug\net9.0\Microsoft.EntityFr
 C:\Users\User\RiderProjects\MovieMy\MovieAPI\bin\Debug\net9.0\NetTopologySuite.dll
 C:\Users\User\RiderProjects\MovieMy\MovieAPI\bin\Debug\net9.0\NetTopologySuite.IO.SqlServerBytes.dll
 C:\Users\User\RiderProjects\MovieMy\MovieAPI\obj\Debug\net9.0\EFCoreSqlServerNetTopologySuite.cs
+C:\Users\User\RiderProjects\MovieMy\MovieAPI\bin\Debug\net9.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\User\RiderProjects\MovieMy\MovieAPI\bin\Debug\net9.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
